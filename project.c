@@ -17,8 +17,8 @@ void addStudent(struct Student students[], int* count);
 void addStudents_db(struct Student students[],int* count);
 void displayAllStudents(const struct Student students[],int* count);
 void searchStudent(const struct Student students[],int *count);// New
-void searchStudentByName(const struct Student students[],int *count);//New
-void searchStudentById(const struct Student students[],int *count);
+void searchStudentByName(const struct Student students[],const int *count);//New
+int  searchStudentById(const struct Student students[],const int *count);
 void saveAllStudents(const struct Student students[],int* count);
 void update_data(struct Student students[],int* count);//New
 void delete_student(struct Student students[],int* count);
@@ -41,10 +41,12 @@ int main()
         printf("\t\t\t\t\t| 1. Add Student                 |\n");
         printf("\t\t\t\t\t| 2. Add Students From CSV file  |\n");
         printf("\t\t\t\t\t| 3. Display All Students        |\n");
-        printf("\t\t\t\t\t| 4. Search Student By ID        |\n");
-        printf("\t\t\t\t\t| 5. Save Process                |\n");
-        printf("\t\t\t\t\t| 6. Exit                        |\n");
-        printf("\t\t\t\t\t|  Enter your choice: ");
+        printf("\t\t\t\t\t| 4. update student Data         |\n");
+        printf("\t\t\t\t\t| 5. Delete Student              |\n");
+        printf("\t\t\t\t\t| 6. Search For Student          |\n");
+        printf("\t\t\t\t\t| 7. Save Process                |\n");
+        printf("\t\t\t\t\t| 8. Exit                        |\n");
+        printf("\t\t\t\t\t|  Enter your choice: \n\t\t\t\t\t");
         scanf("%d",&choice);
 
         switch(choice) {
@@ -58,6 +60,7 @@ int main()
                 addStudents_db(students,&studentCount);
                 system("cls");
                 break;
+
             case 3:
                 system("cls");
                 displayAllStudents(students,&studentCount);
@@ -65,15 +68,25 @@ int main()
                 break;
             case 4:
                 system("cls");
-                searchStudentById(students,&studentCount);
+                update_data(students,&studentCount);
                 system("cls");
                 break;
             case 5:
                 system("cls");
-                saveAllStudents(students,&studentCount);
+                delete_student(students,&studentCount);
                 system("cls");
                 break;
             case 6:
+                system("cls");
+                searchStudent(students,&studentCount);
+                system("cls");
+                break;
+            case 7:
+                system("cls");
+                saveAllStudents(students,&studentCount);
+                system("cls");
+                break;
+            case 8:
                 system("cls");
                 printf("\n\n\n\t\t\t\t\tExiting program. Goodbye!\n");
                 break;
@@ -83,7 +96,7 @@ int main()
                 return 1;
         }
 
-    }while(choice != 6);
+    }while(choice != 8);
     return 0;
 }
 
@@ -206,7 +219,7 @@ void displayAllStudents( const struct Student students[],int* count)
     getch();
 }
 
-void searchStudentById(const struct Student students[],int* count)
+int searchStudentById(const struct Student students[],const int* count)
 {
     // TODO
     char searchID[15];
@@ -221,11 +234,12 @@ void searchStudentById(const struct Student students[],int* count)
         if(!strcmp(searchID ,students[i].id))
         {
             display_student(students[i]);
-            return;
+            return i;
         }
     }
     printf("This Student is not exist!!\n");
     sleep(2);
+    return 0;
 
 }
 
@@ -289,23 +303,155 @@ void display_student(struct Student student)
 void searchStudent(const struct Student students[],int *count)
 {
     //TODO
+    int var ;
+    printf("\n\t\t\t\t\t==================================    \n");
+    printf("\t\t\t\t\t     Search Student\n");
+    printf("\t\t\t\t\t==================================    \n");
+    printf("\t\t\t\t\t        1-Search by ID \n");
+    printf("\t\t\t\t\t        2-Search by name\n");
+    printf("\t\t\t\t\t==================================    \n");
+    printf("\t\t\t\t\tEnter Your choice:\n\t\t\t\t\t");
+    scanf("%d",&var) ;
+    switch(var)
+    {
+        case 1:
+        searchStudentById(students,&count);
+        break ;
+
+        case 2:
+        searchStudentByName(students,&count);
+        break;
+
+        default :
+        printf("\t\t\t\t\t        Invalid choice\n");
+        printf("\t\t\t\t\t==================================    \n");
+        sleep(3);
+        return searchStudent(students,&count);
+
+    }
 }
-void searchStudentByName(const struct Student students[],int *count)
+void searchStudentByName(const struct Student students[],const int *count)
 {
     //TODO
-}
+    char name[50];
+    printf("\n\t\t\t\t\t==================================    \n");
+    printf("\t\t\t\t\t        Search By Name\n");
+    printf("\t\t\t\t\t==================================    \n");
+    printf("\t\t\t\t\t        Enter The name to search:    \n\t\t\t\t\t");
+    scanf("%s",name);
+    for(int i =0 ; i< *count; i++)
+    {
+        if(!strcmp(name,students[i].name))
+        {
+            display_student(students[i]);
+            return ;
+        }
+    }
+
+    printf("\n\t\t\t\t\t==================================    \n");
+    printf("\t\t\t\t\t        Oh!!,This student is not exist\n");
+    printf("\t\t\t\t\t==================================    \n");
+    printf("\n\t\t\t\t\t press any key to back.\n");
+    getch();
+
+    }
+
 void update_data(struct Student students[],int* count)
 {
     //TODO
+    int index ;
+    int choice;
+    printf("\n\t\t\t\t\t==================================    \n");
+    printf("\t\t\t\t\t        Update Student data\n");
+    index = searchStudentById(students,&count);
+    printf("\t\t\t\t\twhat is the data do want to update: \n");
+    printf("\t\t\t\t\t        1-ID \n");
+    printf("\t\t\t\t\t        2-Name\n");
+    printf("\t\t\t\t\t        3-Age\n");
+    printf("\t\t\t\t\t        4-Grade\n");
+    printf("\t\t\t\t\t==================================    \n");
+    printf("\t\t\t\t\tEnter Your Choice \n\t\t\t\t\t:");
+    scanf("%d",&choice) ;
+    switch(choice)
+    {
+        case 1:
+            printf("\t\t\t\t\tEnter the New ID: ");
+            scanf("%s",students[index].id );
+            break;
+        case 2:
+            printf("\t\t\t\t\tEnter the New Name: ");
+            scanf("%s",students[index].name);
+            break;
+        case 3:
+            printf("\t\t\t\t\tEnter the New Age: ");
+            scanf("%d",&students[index].age);
+            break;
+        case 4:
+            printf("\t\t\t\t\tEnter the New Grade: ");
+            scanf("%f",&students[index].grade);
+            break;
+        default:
+            printf("\t\t\t\t\t Invalid Choice!!!!!!");
+            sleep(3);
+            return;
+    }
+
+
 }
-void sort(struct Student students[],int* count)
+/*void sort(struct Student students[],int* count)
 {
     //TODO
+    int choice;
+    printf("\n\t\t\t\t\t==================================    \n");
+    printf("\t\t\t\t\t        Sorting Data\n");
+    printf("\t\t\t\t\t==================================    \n");
+    printf("\t\t\t\t\twhat is the data do want to sort by: \n");
+    printf("\n\t\t\t\t\t==================================    \n");
+    printf("\t\t\t\t\t        1-ID \n");
+    printf("\t\t\t\t\t        2-Name\n");
+    printf("\t\t\t\t\t        3-Grade\n");
+    printf("\t\t\t\t\t==================================    \n");
+    printf("\t\t\t\t\tEnter Your Choice: ");
+    scanf("%d",&choice) ;
+    switch(choice)
+    {
+        case 1:
+            ID_sort(students,&count);
+            break;
+        case 2:
+            name_sort(students,&count);
+            break;
+        case 3:
+            grade_sort(students,&count);
+            break;
+
+        default:
+            printf("\t\t\t\t\t Invalid Choice!!!!!!");
+            sleep(3);
+            return;
+    }
+
 }
-void ID_sort(struct Student students[],int* count)
+*/
+/*void ID_sort(struct Student students[],int* count)
 {
     //TODO
+    int smallest;
+    for(int i = 0;i < *count; i++)
+    {
+        smallest = i;
+        for(int j = i + 1; j < *count;j++)
+        {
+            if(students[j].id < students[i].id)
+            {
+                smallest = j;
+            }
+
+        }
+        students[i].id = smallest;
+    }
 }
+*/
 void name_sort(struct Student students[],int* count)
 {
     //TODO
@@ -313,4 +459,38 @@ void name_sort(struct Student students[],int* count)
 void grade_sort(struct Student students[],int* count)
 {
     //TODO
+}
+void delete_student(struct Student students[],int* count)
+{
+    char ID[15];
+    printf("\n\t\t\t\t\t==================================    \n");
+    printf("\t\t\t\t\t        Delete Data\n");
+    printf("\t\t\t\t\t==================================    \n");
+    printf("\t\t\t\t\tEnter The ID of the Student \n\t\t\t\t\t:");
+    scanf("%s",ID);
+    for(int i = 0;i < *count;i++)
+    {
+        if(!strcmp(ID,students[i].id))
+        {
+            /*students[i].id = NULL;
+            students[i].name = NULL;
+            students[i].age = 0;
+            students[i].grade = 0;
+            */
+            for (int j = i;j < (*count) - 1;j++)
+            {
+                if(j < (*count) -1)
+                {
+                    students[j] = students[j + 1];
+                }
+            }
+            (*count)--;
+            printf("Data has been Deleted Successfully.\n");
+            sleep(3);
+            return;
+        }
+    }
+    printf("\t\t\t\t\tThis ID is not exist!!");
+    sleep(3);
+
 }
