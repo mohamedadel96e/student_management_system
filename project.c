@@ -13,26 +13,25 @@ struct Student {
     float grade;
 }Student;
 // Function prototypes
-void addStudent(struct Student students[], int* count);
-void addStudents_db(struct Student students[],int* count);
-void displayAllStudents(const struct Student students[],int* count);
-void searchStudent(const struct Student students[],int *count);
+void addStudent(struct Student students[], int* count); // Add students manually
+void addStudents_db(struct Student students[],int* count);// add students from csv formated file
+void displayAllStudents(const struct Student students[],int* count);// to display all students in the array
+void searchStudent(const struct Student students[],int *count);// to search for a student in the array
 void searchStudentByName(const struct Student students[],const int *count);
 int  searchStudentById(const struct Student students[],const int *count);
-void saveAllStudents(const struct Student students[],int* count);
-void update_data(struct Student students[],int* count);
-void delete_student(struct Student students[],int* count);
-void sort(struct Student students[],int* count);
-void ID_sort(struct Student students[],int* count);
-void name_sort(struct Student students[],int* count);
-void grade_sort(struct Student students[],int* count);
-int isNumeric(const char str[]);
-void display_student(struct Student);
-int check_ID(const struct Student students[],int* count,const char ID[]);
+void saveAllStudents(const struct Student students[],int* count);// to save the process in a file
+void update_data(struct Student students[],int* count);// to update data of a student
+void delete_student(struct Student students[],int* count);// delete a student from the array
+void sort(struct Student students[],int* count);// sort the students array
+void name_sort(struct Student students[],int* count);// sort by Name
+void grade_sort(struct Student students[],int* count);//sort by grade
+int isNumeric(const char str[]);// check if the inputed ID is numeric
+void display_student(struct Student); // to display one student
+int check_ID(const struct Student students[],int* count,const char ID[]);// to check if the inputed ID is exist or not
 int main()
 {
-    struct Student students[MAX_STUDENTS];
-    int studentCount = 0;
+    struct Student students[MAX_STUDENTS]; // array of structs to save students data
+    int studentCount = 0; // to count number of the students
     int choice;
 
     do{
@@ -100,7 +99,7 @@ int main()
             default:
                 system("cls");
                 printf("\n\n\n\t\t\t\t\tInvalid choice. please enter a valid number!!\n");
-                return 1;
+                sleep(1);
         }
 
     }while(choice != 9);
@@ -173,13 +172,7 @@ void addStudents_db(struct Student students[],int* count)
         sleep(2);
         return;
     }
-    /*char buffer[1024];
-    if (fgets(buffer, sizeof(buffer), csv_file) == NULL) {
-        perror("Error reading file");
-        sleep(2);
-        fclose(csv_file);
-        return;
-    }*/
+
     do
     {
         read = fscanf(csv_file,"%14[^,],%49[^,],%d,%f\n",new_student.id,new_student.name,&new_student.age,&new_student.grade);
@@ -228,7 +221,7 @@ void addStudents_db(struct Student students[],int* count)
 
 void displayAllStudents( const struct Student students[],int* count)
 {
-    // Mohammed El Shafey
+    // TODO
 
     printf("\n\t\t\t\t\t==================================    \n");
     printf("\t\t\t\t\t        Display All Students\n");
@@ -287,9 +280,7 @@ void saveAllStudents(const struct Student students[],int* count)
         fprintf(stderr,"\n\t\t\t\t\tError Opening file!!");
         return;
     }
-    // CSV file format: ID,Name,Age,Grade
-    // Write CSV header
-    //fprintf(csv_file, "ID,Name,Age,Grade\n");
+
     // Write each struct to the CSV file
     for(int i = 0;i < *count; i++)
     {
@@ -307,7 +298,6 @@ int isNumeric(const char str[]) {
     {
         if(!isdigit(str[i]))
         return 0;//not a digit
-
     }
     return 1; // is a digit
 }
@@ -316,8 +306,6 @@ void display_student(struct Student student)
     printf("\n\t\t\t\t\t==================================    \n");
     printf("\t\t\t\t\t        Display Student\n");
     printf("\t\t\t\t\t==================================    \n");
-
-
     printf("\n\t\t\t\t\t student ID    : %s",student.id);
     printf("\n\t\t\t\t\t student name  : %s",student.name);
     printf("\n\t\t\t\t\t student age   : %d",student.age);
@@ -360,7 +348,6 @@ void searchStudent(const struct Student students[],int *count)
             sleep(2);
             system("cls");
             return searchStudent(students,count);
-
     }
 }
 void searchStudentByName(const struct Student students[],const int *count)
@@ -385,7 +372,6 @@ void searchStudentByName(const struct Student students[],const int *count)
     printf("\t\t\t\t\t==================================    \n");
     printf("\n\t\t\t\t\t press any key to back.\n");
     getch();
-
     }
 
 void update_data(struct Student students[],int* count)
@@ -459,6 +445,7 @@ void sort(struct Student students[],int* count)
     printf("\n\t\t\t\t\t==================================    \n");
     printf("\t\t\t\t\t        1-Name \n");
     printf("\t\t\t\t\t        2-Grade\n");
+    printf("\t\t\t\t\t        3-ID\n");
     printf("\t\t\t\t\t==================================    \n");
     printf("\t\t\t\t\tEnter Your Choice: ");
     scanf("%d",&choice) ;
@@ -471,15 +458,12 @@ void sort(struct Student students[],int* count)
         case 2:
             grade_sort(students,count);
             break;
-
         default:
             printf("\t\t\t\t\t Invalid Choice!!!!!!");
             sleep(3);
             return;
     }
-
 }
-
 
 void name_sort(struct Student students[],int* count)
 {
@@ -562,11 +546,6 @@ void delete_student(struct Student students[],int* count)
     {
         if(!strcmp(ID,students[i].id))
         {
-            /*students[i].id = NULL;
-            students[i].name = NULL;
-            students[i].age = 0;
-            students[i].grade = 0;
-            */
             for (int j = i;j < (*count) - 1;j++)
             {
                 if(j < (*count) -1)
