@@ -365,7 +365,6 @@ void searchStudentByName(const struct Student students[],const int *count)
         {
             system("cls");
             display_student(students[i]);
-            return ;
         }
     }
     printf("\t\t\t\t\t This student is not exist!!\n");
