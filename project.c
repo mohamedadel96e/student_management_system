@@ -489,7 +489,7 @@ void grade_sort(struct Student students[],int* count)
 {
     //TODO
     int sort_type;
-    float temp;
+    struct Student temp;
     printf("\t\t\t\t\tEnter sort type\n\t\t\t\t\t1.ASC\n\t\t\t\t\t2.DESC\n ");
     printf("\t\t\t\t\tEnter your choice: ");
     scanf("%d",&sort_type);
@@ -503,9 +503,9 @@ void grade_sort(struct Student students[],int* count)
                 {
                     if(students[j].grade > students[j + 1].grade)
                     {
-                        temp = students[j].grade;
-                        students[j].grade = students[j + 1].grade;
-                        students[j + 1].grade = temp;
+                        temp = students[j];
+                        students[j] = students[j + 1];
+                        students[j + 1] = temp;
                     }
                 }
             }
@@ -519,9 +519,9 @@ void grade_sort(struct Student students[],int* count)
                 {
                     if(students[j].grade < students[j + 1].grade)
                     {
-                        temp = students[j].grade;
-                        students[j].grade = students[j + 1].grade;
-                        students[j + 1].grade = temp;
+                        temp = students[j];
+                        students[j] = students[j + 1];
+                        students[j + 1] = temp;
                     }
                 }
             }
