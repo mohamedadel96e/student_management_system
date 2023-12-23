@@ -354,23 +354,29 @@ void searchStudentByName(const struct Student students[],const int *count)
 {
     //TODO
     char name[50];
+    int name_flag = 0;
     printf("\n\t\t\t\t\t==================================    \n");
     printf("\t\t\t\t\t        Search By Name\n");
     printf("\t\t\t\t\t==================================    \n");
     printf("\t\t\t\t\tEnter The name to search: ");
-    scanf("%s",name);
+    fflush(stdin);
+    gets(&name);
     for(int i =0 ; i< *count; i++)
     {
         if(!strcmp(name,students[i].name))
         {
             system("cls");
             display_student(students[i]);
+            name_flag++;
         }
     }
-    printf("\t\t\t\t\t This student is not exist!!\n");
-    printf("\t\t\t\t\t==================================    \n");
-    printf("\n\t\t\t\t\t press any key to back.\n");
-    getch();
+    if(name_flag == 0)
+    {
+        printf("\t\t\t\t\t This student is not exist!!\n");
+        printf("\t\t\t\t\t==================================    \n");
+        printf("\n\t\t\t\t\t press any key to back.\n");
+        getch();
+    }
     }
 
 void update_data(struct Student students[],int* count)
