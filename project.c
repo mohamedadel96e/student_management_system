@@ -119,15 +119,16 @@ void addStudent(struct Student students[], int* count)
         printf("\t\t\t\t\t==================================    \n");
         printf("\n\t\t\t\t\tEnter Student ID   : ");
         scanf("%s",&newStudent.id);
-        if(check_ID(students,count,newStudent.id))
-        {
-            printf("\t\t\t\t\tThis ID is already exist!!!\n");
-            sleep(2);
-            return;
-        }
+
         if(!isNumeric(newStudent.id))
         {
             printf("\n\t\t\t\t\tError, Invalid ID!!!");
+            sleep(2);
+            return;
+        }
+        if(check_ID(students,count,newStudent.id))
+        {
+            printf("\t\t\t\t\tThis ID is already exist!!!\n");
             sleep(2);
             return;
         }
@@ -146,7 +147,8 @@ void addStudent(struct Student students[], int* count)
         students[*count] = newStudent;
         (*count)++;
         printf("\n\n\t\t\t\t\tStudent added successfully! \n");
-        printf("\t\t\t\t\tThe Number Of empty spaces = %d",MAX_STUDENTS - (*count));
+        printf("\t\t\t\t\tNumber of students now = %d",*count);
+        printf("\n\t\t\t\t\tThe Number Of empty spaces = %d",MAX_STUDENTS - (*count));
         sleep(1);
     }else{
         printf("\t\t\t\t\tStudent database is full. Cannot add more students.\n");
@@ -159,6 +161,7 @@ void addStudents_db(struct Student students[],int* count)
 {
     // TODO
     int read = 0;
+    int num = 0;
     unsigned short records = 0;
     struct Student new_student;
     char file_name[50];
@@ -177,10 +180,10 @@ void addStudents_db(struct Student students[],int* count)
     do
     {
         read = fscanf(csv_file,"%14[^,],%49[^,],%d,%f\n",new_student.id,new_student.name,&new_student.age,&new_student.grade);
-
+        num++;
         if(check_ID(students,count,new_student.id))
         {
-            printf("/t/t/t/t/tThere is an Id already exist With index %d in program!\n",*(count - 1));
+            printf("\n\t\t\t\t\tThere is an Id already exist With index %d in the file!\n",num);
             continue;
         }
         if(new_student.grade < 0)
@@ -212,8 +215,10 @@ void addStudents_db(struct Student students[],int* count)
 
     }while(!feof(csv_file));
     printf("\t\t\t\t\tThe Number Entered = %d\n",records);
-    printf("\t\t\t\t\tThe Number Of empty spaces = %d",MAX_STUDENTS - (*count));
-    sleep(3);
+    printf("\t\t\t\t\tNumber of students now = %d",*count);
+    printf("\n\t\t\t\t\tThe Number Of empty spaces = %d",MAX_STUDENTS - (*count));
+    printf("\n\t\t\t\t\tPress any key to continue.");
+    getch();
     fclose(csv_file);
 
     }
@@ -609,4 +614,3 @@ int check_ID(const struct Student students[],int* count,const char ID[])
     }
     return 0;
 }
-
